@@ -1,128 +1,139 @@
-# Web Research Agent
+# Agente de Pesquisa Web
 
-A Claude Code sub-agent for hotel operators. Cost-efficient web research — finding local businesses, suppliers, products, vendors, and competitive intel — and saving the results so you don't re-research the same thing twice.
+Um subagente do Claude Code para operadores hoteleiros. Pesquisa web com ótimo custo-benefício — encontrando empresas locais, fornecedores, produtos, vendedores e informações sobre a concorrência — e salvando os resultados para que você não precise pesquisar a mesma coisa duas vezes.
 
-Built on the **WAT framework** (Workflows, Agents, Tools): probabilistic AI handles reasoning, deterministic scripts handle execution.
-
----
-
-## What it does
-
-- **Finds local businesses** (plumbers, electricians, suppliers, contractors) — returns name, phone, email, address, rating
-- **Researches products** — specs, pricing, availability, where to buy locally
-- **Pulls competitor / market data** — pricing, offerings, reviews of comparable properties
-- **Returns structured results** — tables or bullets with source URLs, ratings, and a clear recommendation
-- **Caches its findings** — every research project is saved to per-agent memory so the next run hits the cache instead of re-searching
+Construído sobre a **estrutura WAT** (Workflows, Agents, Tools): IA probabilística cuida do raciocínio, scripts determinísticos cuidam da execução.
 
 ---
 
-## What you need
+## O que faz
 
-- [Claude Code](https://claude.ai/code) installed
-- Web access (the agent uses Claude Code's built-in `WebSearch` and `WebFetch` tools)
-- Optional: an Anthropic API key if you're driving the agent outside a billed Claude Code session
-
----
-
-## Quick start
-
-1. **Clone the repo** into a Claude Code project:
-
-   ```bash
-   git clone https://github.com/th1-ai/web-research-agent.git
-   cd web-research-agent
-   ```
-
-2. **Copy the env template** and fill it in (or skip it — the agent runs on Claude Code defaults if you have no API keys to wire up):
-
-   ```bash
-   cp .env.example .env
-   ```
-
-3. **Edit [`.claude/agents/web-research.md`](.claude/agents/web-research.md)** — replace the `{{HOTEL_*}}` placeholders described in [Customising](#customising) with your property's details.
-
-4. **Open in Claude Code** from the project root:
-
-   ```bash
-   claude
-   ```
-
-5. **Invoke the agent**:
-
-   > "Find me three vetted plumbers within 30 minutes of the property who handle commercial work."
-
-   Claude Code will pick up the `web-research` sub-agent automatically because of the front-matter `description` line.
+- **Encontra empresas locais** (encanadores, eletricistas, fornecedores, empreiteiros) — retorna nome, telefone, e-mail, endereço e avaliação
+- **Pesquisa produtos** — especificações, preços, disponibilidade e onde comprar localmente
+- **Extrai dados de concorrentes/mercado** — preços, ofertas e avaliações de propriedades semelhantes
+- **Retorna resultados estruturados** — tabelas ou listas com URLs de origem, avaliações e uma recomendação clara
+- **Armazena em cache os resultados** — cada pesquisa é salva na memória do agente, para que a próxima execução utilize o cache em vez de pesquisar novamente
 
 ---
 
-## File structure
+## O que você precisa
+
+- [Claude Code](https://claude.ai/code) instalado
+- Acesso à web (o agente utiliza as ferramentas integradas `WebSearch` e `WebFetch` do Claude Code)
+- Opcional: uma chave de API da Anthropic, caso esteja executando o agente fora de uma sessão paga do Claude Code
+
+---
+
+## Rápido Início
+
+1. **Clone o repositório** em um projeto Claude Code:
+
+``bash
+
+git clone https://github.com/th1-ai/web-research-agent.git
+
+cd web-research-agent
+
+```
+
+2. **Copie o modelo de ambiente** e preencha-o (ou ignore — o agente usa as configurações padrão do Claude Code se você não tiver chaves de API para configurar):
+
+``bash
+
+cp .env.example .env
+
+```
+
+3. **Edite [`.claude/agents/web-research.md`](.claude/agents/web-research.md)** — substitua os marcadores `{{HOTEL_*}}` descritos em [Customising](#customising) com os detalhes da sua propriedade.
+
+4. **Abra no Claude Code** a partir da raiz do projeto:
+
+``bash
+
+claude
+
+```
+
+5. **Invoque o agente**:
+
+> "Encontre três encanadores qualificados a até 30 minutos da propriedade que trabalhem com serviços comerciais."
+
+O Claude Code detectará automaticamente o subagente `web-research` devido à linha `description` no frontmatter.
+
+---
+
+## Estrutura de arquivos
 
 ```
 web-research-agent/
-├── README.md                                    # This file
-├── .env.example                                 # Optional API keys
+├── README.md # Este arquivo
+├── .env.example # Chaves de API opcionais
 ├── .gitignore
 ├── LICENSE
 └── .claude/
-    ├── agents/
-    │   └── web-research.md                      # The sub-agent definition
-    └── agent-memory/
-        └── web-research/
-            ├── MEMORY.md                        # Index of saved research projects
-            └── example-feedback-pattern.md      # Example "memory note" — replace with your own
+
+├── agents/
+
+│ └── web-research.md # A definição do subagente
+
+└── agent-memory/
+└── web-research/
+
+├── MEMORY.md # Índice de projetos de pesquisa salvos
+
+└── example-feedback-pattern.md # Exemplo de "nota de memória" — substitua pela sua próprio
 ```
 
 ---
 
-## Customising
+## Personalização
 
-The agent file uses placeholders so it can be adapted to any property anywhere in the world. Replace the following before first run:
+O arquivo do agente usa marcadores de posição para que possa ser adaptado a qualquer propriedade em qualquer lugar do mundo. Substitua o seguinte antes da primeira execução:
 
-| Placeholder | What to put | Example |
+| Marcador de posição | O que inserir | Exemplo |
+
 |---|---|---|
-| `{{HOTEL_NAME}}` | Your property name | `The Olive Tree Inn` |
-| `{{HOTEL_LOCATION}}` | Town / village | `<your town>` |
-| `{{HOTEL_REGION}}` | Region or state | `<your region>` |
-| `{{HOTEL_NEARBY_TOWNS}}` | Comma-separated list of nearby towns | `<town A>, <town B>, <town C>` |
-| `{{HOTEL_LANGUAGE}}` | Local search language | `French`, `Spanish`, `English` |
 
-You can do this with any text editor or with one `sed` pass:
+| `{{HOTEL_NAME}}` | Nome da sua propriedade | `The Olive Tree Inn` |
+
+| `{{HOTEL_LOCATION}}` | Cidade/vila | `<sua cidade>` |
+
+| `{{HOTEL_REGION}}` | Região ou estado | `<sua região>` |
+
+| `{{HOTEL_NEARBY_TOWNS}}` | Lista de cidades próximas separadas por vírgulas | `<cidade A>, <cidade B>, <cidade C>` |
+
+| `{{HOTEL_LANGUAGE}}` | Idioma de busca local | `Francês`, `Espanhol`, `Inglês` |
+
+Você pode fazer isso com qualquer editor de texto ou com uma única passagem do `sed`:
 
 ```bash
 sed -i '' \
-  -e 's|{{HOTEL_NAME}}|The Olive Tree Inn|g' \
-  -e 's|{{HOTEL_LOCATION}}|<your town>|g' \
-  -e 's|{{HOTEL_REGION}}|<your region>|g' \
-  -e 's|{{HOTEL_NEARBY_TOWNS}}|<nearby towns>|g' \
-  -e 's|{{HOTEL_LANGUAGE}}|<local language>|g' \
-  .claude/agents/web-research.md
+-e 's|{{HOTEL_NAME}}|The Olive Tree Inn|g' \
+-e 's|{{HOTEL_LOCATION}}|<sua cidade>|g' \
+-e 's|{{HOTEL_REGION}}|<sua região>|g' \
+-e 's|{{HOTEL_NEARBY_TOWNS}}|<cidades próximas>|g' \
+-e 's|{{HOTEL_LANGUAGE}}|<idioma local>|g' \
+.claude/agents/web-research.md
 ```
 
 ---
 
-## How memory works
+## Como a memória funciona
 
-The agent uses Claude Code's per-agent memory at `.claude/agent-memory/web-research/`. After each research session, it saves:
+O agente usa a memória por agente do Claude Code em `.claude/agent-memory/web-research/`. Após cada sessão de pesquisa, o sistema salva:
 
-- **Project files** (`project_<slug>.md`) — one file per research topic, with the question, the answer, contact details, and source URLs. The next run reads these first so it doesn't re-search what's already known.
-- **Feedback notes** — patterns that make future research faster or cheaper (e.g. "for local suppliers, one focused query in the local language beats three broad English ones").
+- **Arquivos de projeto** (`project_<slug>.md`) — um arquivo por tópico de pesquisa, contendo a pergunta, a resposta, os detalhes de contato e os URLs das fontes. A próxima execução lê esses arquivos primeiro para evitar pesquisar novamente informações já conhecidas.
 
-[`MEMORY.md`](.claude/agent-memory/web-research/MEMORY.md) is the index — keep one line per project file, dated, so stale research is obvious. [`example-feedback-pattern.md`](.claude/agent-memory/web-research/example-feedback-pattern.md) shows the recommended format for a feedback note. Delete it once you have your own.
+- **Notas de feedback** — padrões que tornam pesquisas futuras mais rápidas ou econômicas (por exemplo, "para fornecedores locais, uma consulta focada no idioma local é melhor do que três consultas genéricas em inglês").
 
-> **Heads-up on committing memory files:** project research often contains real phone numbers, prices, and email addresses for local businesses. The included `.gitignore` keeps `.env` out of git, but does not exclude `.claude/agent-memory/`. If you want to keep memory private, add `.claude/agent-memory/` to your local `.gitignore` or maintain a private fork.
+[`MEMORY.md`](.claude/agent-memory/web-research/MEMORY.md) é o índice — mantenha uma linha por arquivo de projeto, com a data, para identificar pesquisas desatualizadas. [`example-feedback-pattern.md`](.claude/agent-memory/web-research/example-feedback-pattern.md) mostra o formato recomendado para uma nota de feedback. Exclua-o assim que tiver o seu próprio formato.
 
----
-
-## Related agents
-
-This agent works well alongside:
-
-- [`concierge-agent`](https://github.com/th1-ai/concierge-agent) — pulls in research findings when adding new restaurants, beach clubs, or providers to the vetted-contacts list
-- [`marketing-report-agent`](https://github.com/th1-ai/marketing-report-agent) — uses competitive research to ground recommendations
-- [`general-purpose-agent`](https://github.com/th1-ai/general-purpose-agent) — for open-ended research questions that need broader reasoning than `web-research` alone
+**Atenção ao commitar arquivos de memória:** pesquisas de projetos frequentemente contêm números de telefone, preços e endereços de e-mail reais de empresas locais. O arquivo `.gitignore` incluído impede que o arquivo `.env` seja incluído no Git, mas não exclui o arquivo `.claude/agent-memory/`. Se você deseja manter a privacidade dos arquivos de memória, adicione `.claude/agent-memory/` ao seu arquivo `.gitignore` local ou mantenha um fork privado.
 
 ---
 
-## License
+## Agentes relacionados
 
-MIT — see [LICENSE](LICENSE).
+Este agente funciona bem em conjunto com:
+
+- [`concierge-agent`](https://github.com/th1-ai/concierge-agent) — importa resultados de pesquisas ao adicionar novos restaurantes, clubes de praia ou fornecedores ao vett
